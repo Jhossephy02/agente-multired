@@ -1,59 +1,53 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | Cosmiko</title>
 
-@section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-500 hover:scale-[1.02]">
-        
-        <!-- Título -->
-        <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-6">
-            Iniciar Sesión
-        </h2>
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-        <!-- Mensaje de error -->
-        @if(session('error'))
-            <div class="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center font-medium">
-                {{ session('error') }}
-            </div>
-        @endif
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
 
-        <!-- Formulario de login -->
-        <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
+<div class="login-container">
+    <div class="login-card">
+        <h2>Bienvenido 👋</h2>
+        <p class="subtitle">Inicia sesión para continuar</p>
+
+        <form method="POST" action="{{ route('login.post') }}">
             @csrf
-
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    required 
-                    value="{{ old('email') }}"
-                    class="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                    placeholder="ejemplo@correo.com">
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" name="email" id="email" placeholder="ejemplo@correo.com" required>
             </div>
 
-            <!-- Contraseña -->
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    required 
-                    class="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                    placeholder="••••••••">
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="••••••••" required>
             </div>
 
-            <!-- Botón ingresar -->
-            <button 
-                type="submit" 
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-black py-3 rounded-lg font-semibold transition duration-300 shadow-md">
-                Ingresar
-            </button>
+            <button type="submit" class="btn-login">Iniciar Sesión</button>
         </form>
 
-        <!-- Enlace al registro -->
+        <div class="footer">
+            <p>© 2025 Cosmiko - Todos los derechos reservados</p>
+        </div>
     </div>
 </div>
-@endsection
+
+{{-- Pasar los mensajes de Laravel a JS --}}
+<script>
+    const loginMessages = {
+        success: "{{ session('success') }}",
+        error: "{{ session('error') }}"
+    };
+</script>
+
+<script src="{{ asset('js/login.js') }}"></script>
+</body>
+</html>
