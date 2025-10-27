@@ -9,85 +9,65 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Mostrar formulario de login
-     */
+    // Mostrar formulario de login
     public function showLogin()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
         return view('auth.login');
     }
 
-    /**
-     * Procesar login
-     */
+    // Procesar login
     public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            // ⚙️ Verifica el rol del usuario logueado
-            $user = Auth::user();
-
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->role === 'trabajador') {
-                return redirect()->route('trabajador.dashboard');
-            } else {
-                // Por defecto, si no tiene rol
-                return redirect()->route('dashboard');
-            }
+            return redirect()->intended('dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
+        return back()->with('error', 'Credenciales incorrectas');
     }
 
-    /**
-     * Mostrar formulario de registro
-     */
+    // Mostrar formulario de registro
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    /**
-     * Procesar registro
-     */
+    // Procesar registro
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:admin,empleado',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'trabajador', // 🔹 por defecto se registran como trabajadores
+            'role' => $request->role,
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('trabajador.dashboard');
+        return redirect()->route('dashboard')->with('success', 'Cuenta creada exitosamente');
     }
 
-    /**
-     * Cerrar sesión
-     */
+    // Cerrar sesión
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente');
+        return redirect()->route('login');
     }
 }

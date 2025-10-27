@@ -1,58 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\EmpleadoController;
-use App\Http\Controllers\TramiteController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransaccionController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-
-    
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::resource('clientes', ClienteController::class);
-    Route::resource('empleados', EmpleadoController::class);
-    Route::resource('tramites', TramiteController::class);
-});
-/*
-|--------------------------------------------------------------------------
-| Rutas Web
-|--------------------------------------------------------------------------
-| Aquí se registran las rutas web de tu aplicación.
-| Estas rutas son cargadas por el RouteServiceProvider.
-*/
-
-// 🟣 Página inicial (Login)
+// Rutas públicas
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-
-// 🟢 Procesar inicio de sesión
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
-// 🔒 Rutas protegidas (solo usuarios autenticados)
+// Rutas protegidas (requieren autenticación)
 Route::middleware('auth')->group(function () {
-
-    // 📊 Dashboard principal
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // 👥 CRUD de clientes
+    // Clientes
     Route::resource('clientes', ClienteController::class);
-
-    // 👷‍♂️ CRUD de empleados
-    Route::resource('empleados', EmpleadoController::class);
-
-    // 📁 CRUD de trámites
-    Route::resource('tramites', TramiteController::class);
-
-    // 🗑️ Eliminación múltiple de clientes
-    Route::delete('/clientes/delete-multiple', [ClienteController::class, 'deleteMultiple'])
+    Route::delete('/clientes-delete-multiple', [ClienteController::class, 'deleteMultiple'])
         ->name('clientes.deleteMultiple');
 
-    // 🚪 Cerrar sesión
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // Transacciones
+    Route::resource('transacciones', TransaccionController::class);
 });
-
-}); 

@@ -16,11 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-
-            // 👇 Campos adicionales
-            $table->enum('role', ['admin', 'worker'])->default('worker'); // rol de usuario
-            $table->string('phone')->nullable(); // número de teléfono opcional
-
+            $table->enum('role', ['admin', 'empleado'])->default('empleado'); // ← CAMBIADO
             $table->rememberToken();
             $table->timestamps();
         });
