@@ -24,7 +24,7 @@ class DashboardController extends Controller
     public function user()
     {
         $user = Auth::user();
-        
+
         $stats = [
             'total_clientes' => Cliente::count(),
         ];

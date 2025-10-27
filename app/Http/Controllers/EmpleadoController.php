@@ -16,7 +16,7 @@ class EmpleadoController extends Controller
         $empleados = User::where('role', 'empleado')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-        
+
         return view('empleados.index', compact('empleados'));
     }
 
@@ -79,11 +79,11 @@ class EmpleadoController extends Controller
 
         $empleado->name = $request->name;
         $empleado->email = $request->email;
-        
+
         if ($request->filled('password')) {
             $empleado->password = Hash::make($request->password);
         }
-        
+
         $empleado->save();
 
         return redirect()->route('empleados.index')
@@ -96,7 +96,7 @@ class EmpleadoController extends Controller
     public function destroy(User $empleado)
     {
         $empleado->delete();
-        
+
         return redirect()->route('empleados.index')
             ->with('success', 'Empleado eliminado exitosamente');
     }

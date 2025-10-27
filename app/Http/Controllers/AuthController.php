@@ -36,11 +36,11 @@ class AuthController extends Controller
     private function redirectToDashboard()
     {
         $user = Auth::user();
-        
+
         if ($user->role === 'admin') {
             return redirect()->route('dashboard.admin');
         }
-        
+
         return redirect()->route('dashboard.user');
     }
 
