@@ -1,211 +1,297 @@
-<!-- resources/views/layouts/app.blade.php -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Cosmiko') }}</title>
+{{-- resources/views/dashboard.blade.php --}}
+@extends('layouts.app')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+@section('title', 'Dashboard - Cosmiko')
 
-    <!-- TailwindCSS con estilos personalizados -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- ❌ ELIMINA ESTA LÍNEA -->
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
-</head>
-<body class="bg-gray-50">
-
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out z-50">
-        <div class="flex flex-col h-full">
-            
-            <!-- Logo -->
-            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-gray-800">Cosmiko</span>
-                </div>
-                <button id="closeSidebar" class="lg:hidden text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto px-4 py-6">
-                <div class="space-y-2">
-                    
-                    <!-- Dashboard -->
-                    <a href="{{ Auth::user()->role === 'admin' ? route('dashboard.admin') : route('dashboard.user') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('dashboard.*') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        <span class="font-medium">Dashboard</span>
-                    </a>
-
-                    <!-- Clientes -->
-                    <a href="{{ route('clientes.index') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('clientes.*') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span class="font-medium">Clientes</span>
-                    </a>
-
-                    <!-- Nuevo Cliente -->
-                    <a href="{{ route('clientes.create') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                        </svg>
-                        <span class="font-medium">Nuevo Cliente</span>
-                    </a>
-
-                    <!-- Depósito -->
-                    <a href="{{ route('movimientos.deposito') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('movimientos.deposito') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span class="font-medium">Depósito</span>
-                    </a>
-
-                    <!-- Retiro -->
-                    <a href="{{ route('movimientos.retiro') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('movimientos.retiro') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span class="font-medium">Retiro</span>
-                    </a>
-
-                    <!-- Trámites -->
-                    <a href="{{ route('movimientos.tramites') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('movimientos.tramites') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span class="font-medium">Trámites</span>
-                    </a>
-
-                    <!-- Pago de Servicios -->
-                    <a href="{{ route('movimientos.pago_servicio') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('movimientos.pago_servicio') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
-                        <span class="font-medium">Pago de Servicios</span>
-                    </a>
-
-                    @if(Auth::user()->role === 'admin')
-                    <!-- Divider -->
-                    <div class="border-t border-gray-200 my-4"></div>
-
-                    <!-- Empleados (Solo Admin) -->
-                    <a href="{{ route('empleados.index') }}" 
-                       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all {{ request()->routeIs('empleados.*') ? 'bg-blue-50 text-blue-600' : '' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        <span class="font-medium">Empleados</span>
-                    </a>
-                    @endif
-
-                </div>
-            </nav>
-
-            <!-- User Info & Logout -->
-            <div class="border-t border-gray-200 p-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-800">{{ Auth::user()->name }}</p>
-                            <p class="text-xs text-gray-500">{{ Auth::user()->role === 'admin' ? 'Administrador' : 'Empleado' }}</p>
-                        </div>
-                    </div>
-                    <a href="{{ route('logout') }}" class="text-gray-400 hover:text-red-600 transition-colors" title="Cerrar sesión">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="lg:pl-64 min-h-screen">
-        
-        <!-- Mobile Header -->
-        <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-            <button id="openSidebar" class="text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+@section('content')
+<div class="app">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="logo" onclick="changePage('dashboard')">Cosmiko</button>
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <svg id="menuIcon" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
-            <span class="font-bold text-lg">Cosmiko</span>
-            <div class="w-6"></div>
         </div>
 
-        <!-- Content -->
-        @yield('content')
-        
-    </main>
+        <div class="sidebar-user">
+            <div class="avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
+            <div class="user-info">
+                <div class="name">{{ Auth::user()->name }}</div>
+                <div class="role">{{ Auth::user()->role }}</div>
+            </div>
+        </div>
 
-    <!-- Overlay para mobile -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden"></div>
+        <nav class="sidebar-menu">
+            <button class="menu-item active" data-page="dashboard" onclick="changePage('dashboard')">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 002 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Panel de Control</span>
+            </button>
+            <button class="menu-item" data-page="clientes" onclick="changePage('clientes')">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Clientes</span>
+            </button>
+            <button class="menu-item" data-page="movimientos" onclick="changePage('movimientos')">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Movimientos</span>
+            </button>
+            <button class="menu-item" data-page="reportes" onclick="changePage('reportes')">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Reportes</span>
+            </button>
+            <button class="menu-item" data-page="configuracion" onclick="changePage('configuracion')">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Configuración</span>
+            </button>
+        </nav>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        // Sidebar toggle para mobile
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const openBtn = document.getElementById('openSidebar');
-        const closeBtn = document.getElementById('closeSidebar');
+        <div class="sidebar-logout">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
-        function openSidebar() {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        }
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- DASHBOARD PAGE -->
+        <div id="page-dashboard" class="page-content">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Panel de Control</h1>
+                </div>
+                <div class="header-date" id="currentDate"></div>
+            </div>
 
-        function closeSidebar() {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>Resumen General</h2>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-success" onclick="changePage('deposito')">
+                            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                                <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Depositar
+                        </button>
+                        <button class="btn btn-primary" onclick="changePage('retiro')">
+                            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                                <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Retirar
+                        </button>
+                    </div>
+                </div>
 
-        openBtn?.addEventListener('click', openSidebar);
-        closeBtn?.addEventListener('click', closeSidebar);
-        overlay?.addEventListener('click', closeSidebar);
+                <div class="kpi-grid" id="kpiGrid">
+                    <!-- KPI Cards se cargarán dinámicamente -->
+                </div>
+            </div>
+        </div>
 
-        // Cerrar sidebar en mobile cuando se hace resize a desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) {
-                closeSidebar();
-            }
-        });
+        <!-- RETIRO PAGE -->
+        <div id="page-retiro" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="changePage('dashboard')">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                            <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h1>Registrar Retiro</h1>
+                </div>
+                <div class="header-date" id="currentDate2"></div>
+            </div>
 
-        // Inicializar: cerrar sidebar en mobile
-        if (window.innerWidth < 1024) {
-            sidebar.classList.add('-translate-x-full');
-        }
-    </script>
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <form id="formRetiro">
+                        @csrf
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <select class="form-control" name="cliente_id" id="clienteRetiro" required>
+                                <option value="">Seleccionar cliente...</option>
+                            </select>
+                        </div>
 
-    @stack('scripts')
-</body>
-</html>
+                        <div class="form-group">
+                            <label>Cuenta Destino</label>
+                            <select class="form-control" name="cuenta_destino" required>
+                                <option value="">Seleccionar cuenta...</option>
+                                <option value="yape">Yape</option>
+                                <option value="bbva">BBVA</option>
+                                <option value="bcp">BCP</option>
+                                <option value="interbank">Interbank</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Monto</label>
+                            <input type="number" class="form-control" name="monto" placeholder="0.00" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" class="form-control" name="fecha" value="{{ date('Y-m-d') }}" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-cancel" onclick="changePage('dashboard')">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Registrar Retiro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEPOSITO PAGE -->
+        <div id="page-deposito" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="changePage('dashboard')">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                            <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h1>Registrar Depósito</h1>
+                </div>
+                <div class="header-date" id="currentDate3"></div>
+            </div>
+
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <form id="formDeposito">
+                        @csrf
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <select class="form-control" name="cliente_id" id="clienteDeposito" required>
+                                <option value="">Seleccionar cliente...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Monto</label>
+                            <input type="number" class="form-control" name="monto" placeholder="0.00" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Método de Pago</label>
+                            <select class="form-control" name="metodo_pago" required>
+                                <option value="">Seleccionar método...</option>
+                                <option value="yape">Yape</option>
+                                <option value="transferencia">Transferencia</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Referencia</label>
+                            <input type="text" class="form-control" name="referencia" placeholder="Número de operación">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" class="form-control" name="fecha" value="{{ date('Y-m-d') }}" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-cancel" onclick="changePage('dashboard')">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                Registrar Depósito
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTRAS PÁGINAS -->
+        <div id="page-clientes" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Clientes</h1>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <h2>Módulo en desarrollo...</h2>
+                    <p>Próximamente podrás gestionar tus clientes desde aquí.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-movimientos" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Movimientos</h1>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <h2>Módulo en desarrollo...</h2>
+                    <p>Próximamente podrás ver todos los movimientos desde aquí.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-reportes" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Reportes</h1>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <h2>Módulo en desarrollo...</h2>
+                    <p>Próximamente podrás generar reportes desde aquí.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-configuracion" class="page-content" style="display: none;">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Configuración</h1>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="form-container">
+                    <h2>Módulo en desarrollo...</h2>
+                    <p>Próximamente podrás configurar el sistema desde aquí.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script src="{{ asset('js/dashboard.js') }}"></script>
+@endpush

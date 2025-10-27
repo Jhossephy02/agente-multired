@@ -6,6 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\LayoutController;
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +21,20 @@ use App\Http\Controllers\MovimientoController;
 | Agrupa rutas por módulo: autenticación, dashboard, clientes, empleados y movimientos.
 |
 */
+
+// Ruta raíz -> muestra el login
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+
+// Ruta para procesar el login
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+// Ruta para cerrar sesión
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Ruta 'home' que redirige al login para evitar errores
+Route::get('/home', function () {
+    return redirect()->route('login');
+})->name('home');
 
 // =====================================
 // 🔐 AUTENTICACIÓN
@@ -66,7 +85,7 @@ Route::middleware(['auth'])->prefix('empleados')->group(function () {
 Route::middleware(['auth'])->prefix('movimientos')->group(function () {
 
     // 🟢 Depósitos
-    Route::get('/deposito', [MovimientoController::class, 'deposito'])->name('movimientos.deposito');
+   Route::get('/deposito', [MovimientoController::class, 'deposito'])->name('movimientos.deposito');
     Route::post('/deposito', [MovimientoController::class, 'storeDeposito'])->name('movimientos.deposito.store');
 
     // 🔴 Retiros
@@ -84,3 +103,4 @@ Route::middleware(['auth'])->prefix('movimientos')->group(function () {
     // 🗑️ Borrar todo el historial
     Route::delete('/eliminar-todo', [MovimientoController::class, 'deleteAll'])->name('movimientos.deleteAll');
 });
+

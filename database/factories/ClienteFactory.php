@@ -14,8 +14,8 @@ class ClienteFactory extends Factory
         return [
             'dni' => $this->faker->unique()->numerify('########'),
             'nombre' => $this->faker->name(),
-            'email' => $this->faker->safeEmail(),
-            'telefono' => $this->faker->phoneNumber(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'telefono' => $this->faker->numerify('### ### ###'),
         ];
     }
 }

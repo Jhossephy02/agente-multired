@@ -8,7 +8,7 @@ class MovimientoController extends Controller
 {
     public function deposito()
     {
-        return view('movimientos.deposito');
+        return view('movimientos.deposito'); // asegúrate de tener la vista creada
     }
 
     public function storeDeposito(Request $request)

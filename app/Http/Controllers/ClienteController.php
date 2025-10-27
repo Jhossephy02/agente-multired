@@ -33,7 +33,7 @@ class ClienteController extends Controller
 
     public function deleteMultiple(Request $request)
 {
-    $ids = $request->clientes;
+    $ids = $request->input('clientes');
     if ($ids && count($ids) > 0) {
         Cliente::whereIn('id', $ids)->delete();
         return redirect()->route('clientes.index')->with('success', 'Clientes eliminados correctamente.');
