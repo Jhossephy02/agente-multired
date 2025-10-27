@@ -9,13 +9,13 @@ class ClienteController extends Controller
 {
     public function index()
     {
-    return view('clientes.index');
-}
+        return view('clientes.index');
+    }
 
     public function create()
-{
-    return view('clientes.create');
-}
+    {
+        return view('clientes.create');
+    }
 
 
     public function store(Request $request)
@@ -32,13 +32,13 @@ class ClienteController extends Controller
     }
 
     public function deleteMultiple(Request $request)
-{
-    $ids = $request->clientes;
-    if ($ids && count($ids) > 0) {
-        Cliente::whereIn('id', $ids)->delete();
-        return redirect()->route('clientes.index')->with('success', 'Clientes eliminados correctamente.');
+    {
+        $ids = $request->clientes;
+        if ($ids && count($ids) > 0) {
+            Cliente::whereIn('id', $ids)->delete();
+            return redirect()->route('clientes.index')->with('success', 'Clientes eliminados correctamente.');
+        }
+        return redirect()->route('clientes.index')->with('success', 'No seleccionaste ningún cliente.');
     }
-    return redirect()->route('clientes.index')->with('success', 'No seleccionaste ningún cliente.');
-}
 
 }
