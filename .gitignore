@@ -1,24 +1,51 @@
+# =========================================
+# ARCHIVOS TEMPORALES Y DE SISTEMA
+# =========================================
 *.log
 .DS_Store
+Thumbs.db
+
+# =========================================
+# ENTORNOS Y CONFIGURACIÓN
+# =========================================
 .env
 .env.backup
 .env.production
+Homestead.yaml
+Homestead.json
+auth.json
+
+# =========================================
+# EDITORES / IDEs
+# =========================================
+.fleet/
+.idea/
+.nova/
+.phpunit.cache/
+.vscode/
+.zed/
 .phpactor.json
 .phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
+
+# =========================================
+# DEPENDENCIAS
+# =========================================
+/vendor/
+/node_modules/
+
+# =========================================
+# ARCHIVOS DE COMPILACIÓN / CACHE
+# =========================================
+/public/build/
+/public/hot/
+/public/storage/
 /storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
+/storage/pail/
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# =========================================
+# OTROS
+# =========================================
