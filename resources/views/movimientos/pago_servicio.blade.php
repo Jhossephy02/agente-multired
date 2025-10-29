@@ -9,12 +9,17 @@
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">Cliente</label>
-            <select class="form-select" name="cliente_id" required>
-              <option value="" selected disabled>Seleccione</option>
-              @foreach($clientes as $c)
-                <option value="{{ $c->id }}">{{ $c->nombre }}</option>
-              @endforeach
-            </select>
+            <select name="empresa_id" class="form-select" required>
+    <option value="">Seleccione una empresa</option>
+    @foreach($empresas as $empresa)
+        <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+    @endforeach
+</select>
+
+<input type="text" name="codigo" class="form-control" placeholder="Código de referencia" required>
+
+<input type="number" step="0.01" name="monto" class="form-control" placeholder="Monto" required>
+
           </div>
           <div class="col-md-6">
             <label class="form-label">Monto</label>
