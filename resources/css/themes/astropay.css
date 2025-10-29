@@ -1,16 +1,13 @@
-
 :root[data-palette="astropay"] {
   --bg: #f7fafc;
   --bg-alt: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e5e7eb;
-  --accent: #2563eb;
-  --accent-2: #0ea5e9;
-  --chip-pending: #f59e0b;
-  --chip-approve: #10b981;
-  --chip-deny: #ef4444;
+  --accent: #ff3d4e;
+  --accent-2: #ff7b8a;
 }
+
 html.dark:root[data-palette="astropay"] {
   --bg: #0d1117;
   --bg-alt: #11131a;

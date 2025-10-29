@@ -5,6 +5,11 @@
 @import './themes/banco.css';
 @import './themes/narco.css';
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 /* Default palette (astropay) if none set */
 :root {
   --bg: #f7fafc;
@@ -114,6 +119,17 @@ body {
   background: var(--bg-alt);
   color: var(--text);
   border: 1px solid var(--border);
+}
+
+/* Utilities custom (solo si realmente TIENES que agregarlas) */
+.button-soft {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  transition: .2s ease;
+}
+.button-soft:hover {
+  filter: brightness(1.2);
 }
 
 select, input, textarea {

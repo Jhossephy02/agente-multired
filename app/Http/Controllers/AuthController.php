@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -14,22 +16,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+        // Validación básica
+        $data = $request->validate([
+            'email'    => ['required','email'],
+            'password' => ['required','string','min:6'],
         ]);
 
-        if (Auth::attempt($credentials, true)) {
-            $request->session()->regenerate();
+        // Buscar usuario
+        $user = User::where('email', $data['email'])->first();
 
-            // Si el usuario tiene campo 'role', redirigir por rol, sino admin por defecto
-            $role = Auth::user()->role ?? 'admin';
-            return $role === 'admin'
-                ? redirect()->route('dashboard.admin')->with('success', '¡Bienvenido de vuelta!')
-                : redirect()->route('dashboard.user')->with('success', '¡Bienvenido de vuelta!');
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return back()->with('error', 'Credenciales inválidas')->withInput();
         }
 
-        return back()->with('error', 'Credenciales inválidas');
+        // Login + "remember me" opcional
+        Auth::login($user, true);
+
+        // Redirigir por rol
+        return $user->role === 'admin'
+            ? redirect()->route('dashboard.admin')
+            : redirect()->route('dashboard.user');
     }
 
     public function logout(Request $request)
@@ -37,6 +43,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente');
+        return redirect()->route('login')->with('success', 'Sesión cerrada');
     }
 }

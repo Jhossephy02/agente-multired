@@ -1,25 +1,27 @@
 <?php
-// app/Http/Middleware/EnsureRole.php
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class EnsureRole
 {
-    /**
-     * Handle an incoming request.
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
-     */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $role)
     {
         $user = $request->user();
-        if (!$user || ($user->role ?? null) !== $role) {
-            abort(403, 'No autorizado');
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
         }
+
+        // Ajusta según cómo guardas el rol (columna 'role' en users)
+        if ($user->role !== $role) {
+            return redirect()
+                ->route('dashboard.user')
+                ->with('error', 'No tienes permisos para acceder a esta sección.');
+        }
+
         return $next($request);
     }
 }
