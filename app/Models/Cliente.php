@@ -9,16 +9,12 @@ class Cliente extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
+    protected $table = 'clientes'; // 👈 importante
+
     protected $fillable = [
         'dni',
         'nombre',
-        'email',      // ← Incluye o excluye según tu tabla
+        'email',
         'telefono',
     ];
 }
-=======
-    protected $table = 'clientes'; // 👈 importante
-    protected $fillable = ['dni', 'nombre', 'email', 'telefono'];
-}
->>>>>>> 818eeb5 (auto)
