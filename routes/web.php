@@ -7,23 +7,12 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\MovimientoController;
 
-/*
-|--------------------------------------------------------------------------
-| RUTAS DE AUTENTICACIÓN
-|--------------------------------------------------------------------------
-*/
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| RUTAS CON AUTENTICACIÓN
-|--------------------------------------------------------------------------
-*/
 Route::middleware('auth')->group(function () {
 
-    // Dashboards
     Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
         ->middleware('role:admin')
         ->name('dashboard.admin');
@@ -32,11 +21,7 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:empleado')
         ->name('dashboard.empleado');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CLIENTES (solo admin)
-    |--------------------------------------------------------------------------
-    */
+    // CLIENTES (solo admin)
     Route::prefix('clientes')->middleware('role:admin')->group(function () {
         Route::get('/', [ClienteController::class, 'index'])->name('clientes.index');
         Route::get('/crear', [ClienteController::class, 'create'])->name('clientes.create');
@@ -46,11 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | EMPLEADOS (solo admin)
-    |--------------------------------------------------------------------------
-    */
+    // EMPLEADOS (solo admin)
     Route::prefix('empleados')->middleware('role:admin')->group(function () {
         Route::get('/', [EmpleadoController::class, 'index'])->name('empleados.index');
         Route::get('/crear', [EmpleadoController::class, 'create'])->name('empleados.create');
@@ -60,11 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | MOVIMIENTOS (admin y empleado)
-    |--------------------------------------------------------------------------
-    */
+    // MOVIMIENTOS (admin y empleado)
     Route::prefix('movimientos')->group(function () {
 
         Route::get('/', [MovimientoController::class, 'index'])->name('movimientos.index');
@@ -82,4 +59,3 @@ Route::middleware('auth')->group(function () {
         Route::post('/tramites', [MovimientoController::class, 'storeTramites'])->name('movimientos.tramites.store');
     });
 });
-

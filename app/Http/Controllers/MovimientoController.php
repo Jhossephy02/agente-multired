@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class MovimientoController extends Controller
 {
-    // Saldo global del sistema (depósitos suman, retiros/pagos/trámites restan)
     public static function obtenerSaldoActual()
     {
-        return (float) Movimiento::sum(DB::raw("
+        return (float) DB::table('movimientos')->sum(DB::raw("
             CASE 
                 WHEN tipo = 'deposito' THEN monto
                 WHEN tipo = 'retiro' THEN -monto
@@ -28,7 +27,6 @@ class MovimientoController extends Controller
         return view('movimientos.index', compact('movimientos','saldo'));
     }
 
-    // ===== Depósito
     public function createDeposito() {
         $clientes = Cliente::all();
         return view('movimientos.deposito', compact('clientes'));
@@ -58,7 +56,6 @@ class MovimientoController extends Controller
         return redirect()->route('movimientos.index')->with('success','Depósito registrado correctamente.');
     }
 
-    // ===== Retiro
     public function createRetiro() {
         $clientes = Cliente::all();
         $saldo = self::obtenerSaldoActual();
@@ -94,7 +91,6 @@ class MovimientoController extends Controller
         return redirect()->route('movimientos.index')->with('success','Retiro registrado.');
     }
 
-    // ===== Pago de servicio (stub)
     public function pagoServicio() {
         $clientes = Cliente::all();
         return view('movimientos.pago_servicio', compact('clientes'));
@@ -118,7 +114,6 @@ class MovimientoController extends Controller
         return redirect()->route('movimientos.index')->with('success','Pago de servicio registrado.');
     }
 
-    // ===== Tramites (stub)
     public function tramites() {
         $clientes = Cliente::all();
         return view('movimientos.tramites', compact('clientes'));
@@ -142,7 +137,6 @@ class MovimientoController extends Controller
         return redirect()->route('movimientos.index')->with('success','Trámite registrado.');
     }
 
-    // ===== Cambiar estado
     public function updateEstado(Request $request, Movimiento $movimiento) {
         $request->validate([ 'estado' => 'required|in:pendiente,aprobado,rechazado' ]);
         $movimiento->update(['estado' => $request->estado]);
