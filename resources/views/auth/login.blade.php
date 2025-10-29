@@ -1,53 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión | Cosmiko</title>
-
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet"> 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Cosmiko | Iniciar Sesión 🎃</title>
+    <link rel="stylesheet" href="{{ asset('css/halloween.css') }}">
+    <script defer src="{{ asset('js/theme.js') }}"></script>
 </head>
-<body>
-
-<div class="login-container">
-    <div class="login-card">
-        <h2>Bienvenido 👋</h2>
-        <p class="subtitle">Inicia sesión para continuar</p>
-
-        <form method="POST" action="{{ route('login.post') }}">
-            @csrf
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" name="email" id="email" placeholder="ejemplo@correo.com" required>
+<body class="auth theme-dark">
+    <div class="login-wrap">
+        <div class="login-card">
+            <div class="login-head">
+                <div class="logo">🎃</div>
+                <h1>Bienvenido a Cosmiko</h1>
+                <p>La noche está oscura... pero el sistema no 👻</p>
             </div>
 
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" placeholder="••••••••" required>
+            @if (session('error'))
+                <div class="alert error">{{ session('error') }}</div>
+            @endif
+            @if (session('success'))
+                <div class="alert success">{{ session('success') }}</div>
+            @endif
+
+            <form method="POST" action="{{ route('login.post') }}" class="form">
+                @csrf
+                <label class="field">
+                    <span>Correo electrónico</span>
+                    <input type="email" name="email" placeholder="admin@cosmiko.test" required>
+                </label>
+                <label class="field">
+                    <span>Contraseña</span>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </label>
+
+                <div class="actions">
+                    <button class="btn primary w-full">Iniciar sesión</button>
+                </div>
+            </form>
+
+            <div class="foot">
+                <button id="themeToggle" class="toggle-theme">Cambiar a modo claro</button>
+                <p class="copy">© 2025 Cosmiko — Edición Halloween</p>
             </div>
-
-            <button type="submit" class="btn-login">Iniciar Sesión</button>
-        </form>
-
-        <div class="footer">
-            <p>© 2025 Cosmiko - Todos los derechos reservados</p>
         </div>
     </div>
-</div>
-
-{{-- Pasar los mensajes de Laravel a JS --}}
-<script>
-    const loginMessages = {
-        success: "{{ session('success') }}",
-        error: "{{ session('error') }}"
-    };
-</script>
-
-<script src="{{ asset('js/login.js') }}"></script>
+    <div class="bats" aria-hidden="true"></div>
 </body>
 </html>

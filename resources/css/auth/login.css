@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/body {
+    background: url('https://i.imgur.com/jM7YFQd.jpeg') center/cover fixed no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Tarjeta */
+.login-card {
+    background: rgba(15, 15, 22, 0.85);
+    padding: 38px 32px;
+    width: 380px;
+    border-radius: 18px;
+    border: 1px solid #ff7f24;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 0 25px #ff6a00b7;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Inputs */
+.login-card input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #1b1f2b;
+    color: white;
+    outline: none;
+}
+
+.login-card input::placeholder {
+    color: #8a8fa3;
+}
+
+/* Botón */
+.btn-login {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background: linear-gradient(90deg, #ff6a00, #ff3c00);
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 0 0 12px #ff6a00c7;
+}
+
+.btn-login:hover {
+    background: linear-gradient(90deg, #ff3c00, #ff9a00);
+    transform: translateY(-1px);
+}
+
+/* Titulos */
+h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #d8d7df;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Footer */
+.footer {
+    margin-top: 22px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+/* Decoración */
+.pumpkin {
+    width: 70px;
+    display: block;
+    margin: 0 auto 12px;
+    animation: flicker 2.5s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    0%,100% { filter: brightness(100%); }
+    50% { filter: brightness(140%); }
+}
+
+.bat {
+    animation: flappy 6s infinite ease-in-out;
+}
+
+@keyframes flappy {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(8deg); }
+}

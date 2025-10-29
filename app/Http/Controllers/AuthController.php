@@ -7,44 +7,31 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Mostrar formulario de login
     public function showLoginForm()
     {
-        if (Auth::check()) {
-            return $this->redirectToDashboard();
-        }
         return view('auth.login');
     }
 
-    // Procesar login
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, true)) {
             $request->session()->regenerate();
-            return $this->redirectToDashboard();
+
+            // Si el usuario tiene campo 'role', redirigir por rol, sino admin por defecto
+            $role = Auth::user()->role ?? 'admin';
+            return $role === 'admin'
+                ? redirect()->route('dashboard.admin')->with('success', '¡Bienvenido de vuelta!')
+                : redirect()->route('dashboard.user')->with('success', '¡Bienvenido de vuelta!');
         }
 
-        return back()->with('error', 'Credenciales incorrectas');
+        return back()->with('error', 'Credenciales inválidas');
     }
 
-    // Redirigir según el rol
-    private function redirectToDashboard()
-    {
-        $user = Auth::user();
-        
-        if ($user->role === 'admin') {
-            return redirect()->route('dashboard.admin');
-        }
-        
-        return redirect()->route('dashboard.user');
-    }
-
-    // Cerrar sesión
     public function logout(Request $request)
     {
         Auth::logout();

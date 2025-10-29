@@ -2,25 +2,34 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'admin@cosmiko.com'],
-            [
-                'name' => 'Administrador',
-                'email' => 'admin@cosmiko.com',
-                'password' => Hash::make('password123'), // Cambia esto
+        if (!DB::table('users')->where('email', 'admin@cosmiko.test')->exists()) {
+            DB::table('users')->insert([
+                'name' => 'Admin Cosmiko',
+                'email' => 'admin@cosmiko.test',
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
-            ]
-        );
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        if (!DB::table('users')->where('email', 'user@cosmiko.test')->exists()) {
+            DB::table('users')->insert([
+                'name' => 'Trabajador',
+                'email' => 'user@cosmiko.test',
+                'password' => Hash::make('user123'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }
