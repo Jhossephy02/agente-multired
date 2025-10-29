@@ -33,11 +33,18 @@ class AuthController extends Controller
         Auth::login($user, true);
 
         // Redirigir por rol
-        return $user->role === 'admin'
-            ? redirect()->route('dashboard.admin')
-            : redirect()->route('dashboard.user');
-    }
+       if ($user->role === 'admin') {
+    return redirect()->route('dashboard.admin');
+}
 
+if ($user->role === 'empleado') {
+    return redirect()->route('dashboard.empleado');
+}
+
+return redirect('/'); // o mensaje de acceso no permitido
+
+    }
+    
     public function logout(Request $request)
     {
         Auth::logout();

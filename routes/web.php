@@ -7,23 +7,41 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\MovimientoController;
 
+
 /*
 |--------------------------------------------------------------------------
 | RUTAS DE AUTENTICACIÓN
 |--------------------------------------------------------------------------
 */
 
-// Login (GET) - Mostrar formulario
-Route::get('/', [\App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+/*
+|--------------------------------------------------------------------------
+| RUTAS CON AUTENTICACIÓN
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
-    // dashboards
-    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->middleware('role:admin')->name('dashboard.admin');
-    Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('dashboard.user');
 
-    // clientes (solo admin)
+    // ✅ DASHBOARD ADMIN
+    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
+        ->middleware('role:admin')
+        ->name('dashboard.admin');
+
+    // ✅ DASHBOARD EMPLEADO
+    Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
+        ->middleware('role:empleado')
+        ->name('dashboard.empleado');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLIENTES (solo admin)
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('clientes')->middleware('role:admin')->group(function () {
         Route::get('/', [ClienteController::class, 'index'])->name('clientes.index');
         Route::get('/crear', [ClienteController::class, 'create'])->name('clientes.create');
@@ -33,7 +51,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
     });
 
-    // empleados (solo admin)
+
+    /*
+    |--------------------------------------------------------------------------
+    | EMPLEADOS (solo admin)
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('empleados')->middleware('role:admin')->group(function () {
         Route::get('/', [EmpleadoController::class, 'index'])->name('empleados.index');
         Route::get('/crear', [EmpleadoController::class, 'create'])->name('empleados.create');
@@ -43,8 +66,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
     });
 
-    // movimientos (acceso para admin y user, sin role middleware)
-    Route::prefix('movimientos')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | MOVIMIENTOS (admin y empleado)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('movimientos')->middleware('role:admin,empleado')->group(function () {
+
         Route::get('/deposito', [MovimientoController::class, 'deposito'])->name('movimientos.deposito');
         Route::post('/deposito', [MovimientoController::class, 'storeDeposito'])->name('movimientos.deposito.store');
 
@@ -59,4 +88,5 @@ Route::middleware('auth')->group(function () {
 
         Route::delete('/eliminar-todo', [MovimientoController::class, 'deleteAll'])->name('movimientos.deleteAll');
     });
+
 });
