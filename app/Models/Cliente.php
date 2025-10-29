@@ -9,6 +9,7 @@ class Cliente extends Model
 {
     use HasFactory;
 
+<<<<<<< HEAD
     protected $fillable = [
         'dni',
         'nombre',
@@ -16,3 +17,8 @@ class Cliente extends Model
         'telefono',
     ];
 }
+=======
+    protected $table = 'clientes'; // 👈 importante
+    protected $fillable = ['dni', 'noe', 'email', 'telefono'];
+}
+>>>>>>> 818eeb5 (auto)
