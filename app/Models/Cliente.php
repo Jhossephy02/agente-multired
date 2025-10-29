@@ -19,6 +19,6 @@ class Cliente extends Model
 }
 =======
     protected $table = 'clientes'; // 👈 importante
-    protected $fillable = ['dni', 'noe', 'email', 'telefono'];
+    protected $fillable = ['dni', 'nombre', 'email', 'telefono'];
 }
 >>>>>>> 818eeb5 (auto)
