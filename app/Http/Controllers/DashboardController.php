@@ -11,8 +11,8 @@ class DashboardController extends Controller
         return view('dashboards.admin');
     }
 
-    public function user()
+    public function empleado()
     {
-        return view('dashboards.user');
+        return view('dashboards.empleado');
     }
 }

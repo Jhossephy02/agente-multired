@@ -26,15 +26,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware('auth')->group(function () {
 
-    // ✅ DASHBOARD ADMIN
-    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
-        ->middleware('role:admin')
-        ->name('dashboard.admin');
+   Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
+    ->middleware('role:admin')
+    ->name('dashboard.admin');
 
-    // ✅ DASHBOARD EMPLEADO
-    Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
-        ->middleware('role:empleado')
-        ->name('dashboard.empleado');
+Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
+    ->middleware('role:empleado')
+    ->name('dashboard.empleado');
+
 
 
     /*
