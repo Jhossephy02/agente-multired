@@ -3,50 +3,60 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Movimiento;
+use App\Models\Cliente;
 
 class MovimientoController extends Controller
 {
-    public function deposito()
-    {
-        return view('movimientos.deposito'); // asegúrate de tener la vista creada
+    public function index() {
+        $movimientos = Movimiento::with('cliente')->latest()->paginate(10);
+        return view('movimientos.index', compact('movimientos'));
     }
 
-    public function storeDeposito(Request $request)
-    {
-        // Aquí podrías guardar en la base de datos
-        // Por ahora simulamos un registro exitoso
-        return redirect()->back()->with('success', 'Depósito registrado correctamente.');
+    public function createDeposito() {
+        $clientes = Cliente::all();
+        return view('movimientos.deposito', compact('clientes'));
     }
-    public function pagoServicio()
-{
-    return view('movimientos.pago_servicio');
-}
 
-public function storePagoServicio(Request $request)
-{
-    // Lógica para guardar el pago en la base de datos si lo deseas
-    return redirect()->back()->with('success', 'Pago registrado correctamente.');
-}
-public function retiro()
-{
-    return view('movimientos.retiro');
-}
+    public function storeDeposito(Request $request) {
+        $request->validate([
+            'cliente_id' => 'required',
+            'monto' => 'required|numeric',
+            'cci' => 'nullable|string',
+        ]);
+        Movimiento::create([
+            'tipo' => 'deposito',
+            'cliente_id' => $request->cliente_id,
+            'monto' => $request->monto,
+            'cci' => $request->cci,
+            'estado' => 'pendiente'
+        ]);
+        return redirect()->route('movimientos.index')->with('success','Depósito registrado');
+    }
 
-public function storeRetiro(Request $request)
-{
-    // Aquí podrías guardar el retiro en base de datos
-    return redirect()->back()->with('success', 'Retiro registrado correctamente.');
-}
+    public function createRetiro() {
+        $clientes = Cliente::all();
+        return view('movimientos.retiro', compact('clientes'));
+    }
 
-public function tramites()
-{
-    return view('movimientos.tramites');
-}
+    public function storeRetiro(Request $request) {
+        $request->validate([
+            'cliente_id' => 'required',
+            'monto' => 'required|numeric',
+            'cci' => 'nullable|string',
+        ]);
+        Movimiento::create([
+            'tipo' => 'retiro',
+            'cliente_id' => $request->cliente_id,
+            'monto' => $request->monto,
+            'cci' => $request->cci,
+            'estado' => 'pendiente'
+        ]);
+        return redirect()->route('movimientos.index')->with('success','Retiro registrado');
+    }
 
-public function storeTramites(Request $request)
-{
-    // Aquí puedes guardar el trámite en BD si lo deseas
-    return redirect()->back()->with('success', 'Trámite registrado correctamente.');
-}
-
+    public function updateEstado(Request $request, Movimiento $movimiento) {
+        $movimiento->update(['estado' => $request->estado]);
+        return back()->with('success','Estado actualizado');
+    }
 }

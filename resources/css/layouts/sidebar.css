@@ -1,0 +1,38 @@
+
+.sidebar {
+    width: 250px;
+    background: var(--color-bg);
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    border-right: 1px solid var(--color-border);
+    transition: 0.3s;
+}
+.sidebar-header h2 {
+    color: var(--color-text);
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+.sidebar-menu .link {
+    display: block;
+    padding: 12px;
+    color: var(--color-text-muted);
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: 0.25s;
+}
+.sidebar-menu .link:hover {
+    background: var(--color-accent);
+    color: #fff;
+    transform: translateX(4px);
+}
+.theme-switch, .logout-btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    margin-top: 10px;
+}
