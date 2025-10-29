@@ -1,0 +1,24 @@
+:root{
+  --bg:#0f1115; --card:#161a22; --text:#e7e9ee; --muted:#9aa2b1;
+  --accent:#ff7a18; --accent-2:#ffab4c; --border:#262a36;
+  --success:#10b981; --danger:#ef4444; --warning:#f59e0b;
+}
+[data-theme="light"]{
+  --bg:#f6f7fb; --card:#ffffff; --text:#0f172a; --muted:#64748b;
+  --accent:#ef6c00; --accent-2:#ff9800; --border:#e6e8ef;
+}
+body{background:var(--bg)!important;color:var(--text)!important}
+.bg-app{background:var(--bg)!important}.text-app{color:var(--text)!important}
+.sidebar{width:260px;background:var(--card);border-right:1px solid var(--border);min-height:100vh;color:var(--text)}
+.logo{font-size:24px}
+.link-app{color:var(--text)}
+.link-app.active,.link-app:hover{background:color-mix(in oklab,var(--accent) 18%, transparent);color:#fff}
+.btn-theme{background:var(--accent);border:0;color:#fff}
+.btn-outline-theme{border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn-outline-theme:hover{background:var(--accent);color:#fff}
+.card{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.table-app thead th{background:color-mix(in oklab, var(--accent) 8%, transparent);border-bottom:1px solid var(--border)}
+.kpi .kpi-label{color:var(--muted);font-size:.9rem}.kpi .kpi-value{font-size:1.7rem;font-weight:800}
+.tile{background:color-mix(in oklab, var(--accent) 18%, transparent);border:1px dashed color-mix(in oklab, var(--accent) 40%, #000);color:#fff;font-size:1.1rem}
+.badge.bg-type-deposito{background:var(--success)} .badge.bg-type-retiro{background:var(--danger)}
+.badge.bg-type-pago_servicio{background:var(--warning)} .badge.bg-type-tramite{background:var(--muted);color:#111}

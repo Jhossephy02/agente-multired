@@ -1,19 +1,40 @@
 @extends('layouts.app')
-@section('title', 'Registro de Retiro')
+@section('title','Retiro')
 @section('content')
-<h1 class="text-2xl font-semibold mb-4">Registrar Retiro</h1>
-<div class="mb-2 text-muted">Saldo disponible: <strong>S/ {{ number_format($saldo, 2) }}</strong></div>
-@if(session('error')) <div class="mb-2 chip denied">{{ session('error') }}</div> @endif
-<form action="{{ route('movimientos.retiro.store') }}" method="POST" class="grid gap-3 max-w-xl">
-  @csrf
-  <label>Cliente
-    <select name="cliente_id">@foreach($clientes as $c)<option value="{{ $c->id }}">{{ $c->nombre ?? ('Cliente #'.$c->id) }}</option>@endforeach</select>
-  </label>
-  <label>Monto <input type="number" step="0.01" name="monto" required></label>
-  <label>CCI <input type="text" name="cci"></label>
-  <label>DNI <input type="text" name="dni"></label>
-  <label>Teléfono <input type="text" name="telefono"></label>
-  <label>Correo <input type="email" name="correo"></label>
-  <button class="btn">Guardar</button>
-</form>
+<div class="container-fluid">
+  <div class="card mx-auto" style="max-width:720px">
+    <div class="card-header">Registrar Retiro</div>
+    <div class="card-body">
+      <form method="POST" action="{{ route('movimientos.retiro.store') }}">@csrf
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Cliente</label>
+            <select class="form-select" name="cliente_id" required>
+              <option value="" selected disabled>Seleccione</option>
+              @foreach($clientes as $c)
+                <option value="{{ $c->id }}">{{ $c->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Monto</label>
+            <input type="number" step="0.01" class="form-control" name="monto" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">CCI</label>
+            <input type="text" class="form-control" name="cci">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control" name="correo">
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <div class="text-muted">Saldo disponible: S/ {{ number_format($saldo ?? 0,2) }}</div>
+          <button class="btn btn-theme">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection

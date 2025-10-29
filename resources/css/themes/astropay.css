@@ -1,9 +1,22 @@
-:root[data-palette="astropay"] {
-  --bg: #0b1016;
-  --bg-alt: #121826;
-  --text: #e6edf3;
-  --border: #253040;
-  --accent: #5b8cff;
-  --accent-2: #00c2ff;
-  --muted: #98a4b3;
+:root{
+  --bg:#0d1117;
+  --bg-alt:#0b0f14;
+  --text:#e6edf3;
+  --muted:#9aa7b2;
+  --border:#1f2630;
+  --accent:#ef4444; /* rojo */
+  --accent-2:#f97316; /* naranja */
+  --chip-pending:#f59e0b;
+  --chip-approve:#10b981;
+  --chip-deny:#ef4444;
+}
+/* Light mode (toggle removing .dark class on <html>) */
+html:not(.dark){
+  --bg:#f6f7f9;
+  --bg-alt:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e5e7eb;
+  --accent:#ef4444;
+  --accent-2:#0ea5e9;
 }

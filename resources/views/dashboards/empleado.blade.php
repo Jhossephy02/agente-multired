@@ -1,24 +1,27 @@
 @extends('layouts.app')
-@section('title', 'Panel Empleado')
+@section('title','Panel Empleado')
 @section('content')
-
-<h1 class="text-2xl font-semibold mb-4">Bienvenido {{ auth()->user()->name }}</h1>
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <a href="{{ route('movimientos.deposito') }}" class="shadow rounded p-4 button-soft">
-    <h2 class="text-lg font-semibold">Depósito</h2>
-  </a>
-  <a href="{{ route('movimientos.retiro') }}" class="shadow rounded p-4 button-soft">
-    <h2 class="text-lg font-semibold">Retiro</h2>
-  </a>
-  <a href="{{ route('movimientos.pago_servicio') }}" class="shadow rounded p-4 button-soft">
-    <h2 class="text-lg font-semibold">Pago Servicio</h2>
-  </a>
+<div class="container-fluid">
+  <div class="row g-3 align-items-stretch">
+    <div class="col-md-4"><a href="{{ route('movimientos.deposito') }}" class="tile btn w-100 h-100 d-flex align-items-center justify-content-center">Depósito</a></div>
+    <div class="col-md-4"><a href="{{ route('movimientos.retiro') }}" class="tile btn w-100 h-100 d-flex align-items-center justify-content-center">Retiro</a></div>
+    <div class="col-md-4"><a href="{{ route('movimientos.pago_servicio') }}" class="tile btn w-100 h-100 d-flex align-items-center justify-content-center">Pago de servicio</a></div>
+  </div>
+  <div class="card mt-4"><div class="card-body">
+    <div class="kpi-label">Saldo del Sistema</div>
+    <div class="kpi-value">S/ {{ number_format($saldoTotal ?? 0, 2) }}</div>
+    <div class="row mt-3">
+  <div class="col-md-4">
+    <a href="{{ route('movimientos.deposito') }}" class="btn btn-primary w-100">➕ Depósito</a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ route('movimientos.retiro') }}" class="btn btn-danger w-100">➖ Retiro</a>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ route('movimientos.pago_servicio') }}" class="btn btn-warning w-100">💡 Pago de servicio</a>
+  </div>
 </div>
 
-<div class="shadow rounded p-4 bg-[var(--bg-alt)]">
-  <p class="text-muted mb-1">Saldo del Sistema</p>
-  <h2 class="text-2xl font-bold">S/ {{ number_format($saldoTotal, 2) }}</h2>
+  </div></div>
 </div>
-
 @endsection

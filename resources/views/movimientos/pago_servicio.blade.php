@@ -1,14 +1,35 @@
 @extends('layouts.app')
-@section('title', 'Pago de Servicio')
+@section('title','Pago de servicio')
 @section('content')
-<h1 class="text-2xl font-semibold mb-4">Pago de Servicio</h1>
-<form action="{{ route('movimientos.pago_servicio.store') }}" method="POST" class="grid gap-3 max-w-xl">
-  @csrf
-  <label>Cliente
-    <select name="cliente_id">@foreach($clientes as $c)<option value="{{ $c->id }}">{{ $c->nombre ?? ('Cliente #'.$c->id) }}</option>@endforeach</select>
-  </label>
-  <label>Monto <input type="number" step="0.01" name="monto" required></label>
-  <label>Referencia <input type="text" name="referencia"></label>
-  <button class="btn">Guardar</button>
-</form>
+<div class="container-fluid">
+  <div class="card mx-auto" style="max-width:720px">
+    <div class="card-header">Registrar Pago</div>
+    <div class="card-body">
+      <form method="POST" action="{{ route('movimientos.pago_servicio.store') }}">@csrf
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Cliente</label>
+            <select class="form-select" name="cliente_id" required>
+              <option value="" selected disabled>Seleccione</option>
+              @foreach($clientes as $c)
+                <option value="{{ $c->id }}">{{ $c->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Monto</label>
+            <input type="number" step="0.01" class="form-control" name="monto" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Referencia</label>
+            <input type="text" class="form-control" name="referencia">
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-theme">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection

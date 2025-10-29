@@ -1,33 +1,26 @@
-<aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-title">Cosmiko</div>
-    <div class="sidebar-sub">{{ auth()->user()->name ?? '' }} — {{ auth()->user()->role ?? '' }}</div>
-  </div>
-
-  <nav class="sidebar-menu">
-    <a class="sidebar-link" href="{{ auth()->user() && auth()->user()->role === 'admin' ? route('dashboard.admin') : route('dashboard.empleado') }}">
-      <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
-    </a>
-
-    <a class="sidebar-link" href="{{ route('movimientos.index') }}">
-      <i class="bi bi-arrow-left-right"></i> <span>Movimientos</span>
-    </a>
-
-    @if(auth()->check() && auth()->user()->role === 'admin')
-    <a class="sidebar-link" href="{{ route('clientes.index') }}">
-      <i class="bi bi-people"></i> <span>Clientes</span>
-    </a>
-
-    <a class="sidebar-link" href="{{ route('empleados.index') }}">
-      <i class="bi bi-person-badge"></i> <span>Empleados</span>
-    </a>
-    @endif
-  </nav>
-
-  <div class="sidebar-footer">
-    <form action="{{ route('logout') }}" method="POST">
-      @csrf
-      <button class="btn w-full">Salir</button>
+<aside class="sidebar d-flex flex-column p-3">
+  <a href="{{ route('dashboard.admin') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+    <span class="logo me-2">🪐</span>
+    <span class="fs-5 fw-bold">Cosmiko</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto gap-1">
+    <li class="nav-item">
+      <a href="{{ route('dashboard.admin') }}" class="nav-link link-app {{ request()->routeIs('dashboard.admin') ? 'active' : '' }}">Dashboard</a>
+    </li>
+    <li><a href="{{ route('movimientos.index') }}" class="nav-link link-app {{ request()->routeIs('movimientos.*') ? 'active' : '' }}">Movimientos</a></li>
+    @auth
+      @if(auth()->user()->role === 'admin')
+        <li><a href="{{ route('clientes.index') }}" class="nav-link link-app {{ request()->routeIs('clientes.*') ? 'active' : '' }}">Clientes</a></li>
+        <li><a href="{{ route('empleados.index') }}" class="nav-link link-app {{ request()->routeIs('empleados.*') ? 'active' : '' }}">Empleados</a></li>
+      @endif
+    @endauth
+  </ul>
+  <hr>
+  <div class="d-grid gap-2">
+    <button id="themeToggle" class="btn btn-outline-theme">Cambiar tema</button>
+    <form method="POST" action="{{ route('logout') }}">@csrf
+      <button class="btn btn-theme w-100" type="submit">Salir</button>
     </form>
   </div>
 </aside>
