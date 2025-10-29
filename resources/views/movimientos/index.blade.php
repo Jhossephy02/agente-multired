@@ -1,41 +1,32 @@
 @extends('layouts.app')
-
+@section('title', 'Movimientos')
 @section('content')
-<div class="p-6">
-<h1 class="text-2xl font-bold mb-4">Movimientos</h1>
+  <h1 class="text-2xl font-semibold mb-4">Movimientos</h1>
 
-@if(session('success'))
-<div class="bg-green-100 text-green-800 p-2 rounded">{{ session('success') }}</div>
-@endif
+  <div class="mb-4">Saldo del sistema: <strong>S/ {{ number_format($saldo, 2) }}</strong></div>
 
-<table class="w-full bg-white rounded shadow mt-4">
-<tr class="border-b">
-<th class="p-2">Cliente</th>
-<th class="p-2">Tipo</th>
-<th class="p-2">Monto</th>
-<th class="p-2">Estado</th>
-<th class="p-2">Acción</th>
-</tr>
-@foreach($movimientos as $m)
-<tr class="border-b">
-<td class="p-2">{{ $m->cliente->name ?? '—' }}</td>
-<td class="p-2">{{ ucfirst($m->tipo) }}</td>
-<td class="p-2">S/ {{ $m->monto }}</td>
-<td class="p-2">{{ ucfirst($m->estado) }}</td>
-<td class="p-2">
-<form method="POST" action="{{ route('movimientos.estado',$m) }}">
-@csrf @method('PUT')
-<select name="estado" onchange="this.form.submit()">
-<option>pendiente</option>
-<option>aprobado</option>
-<option>denegado</option>
-</select>
-</form>
-</td>
-</tr>
-@endforeach
-</table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Monto</th><th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @forelse($movimientos as $m)
+        <tr>
+          <td>{{ $m->created_at }}</td>
+          <td>{{ optional($m->cliente)->nombre ?? '—' }}</td>
+          <td>{{ ucfirst($m->tipo) }}</td>
+          <td>S/ {{ number_format($m->monto, 2) }}</td>
+          <td><span class="chip {{ $m->estado === 'aprobado' ? 'approved' : ($m->estado === 'pendiente' ? 'pending' : 'denied') }}">{{ $m->estado }}</span></td>
+        </tr>
+      @empty
+        <tr><td colspan="5">Sin registros</td></tr>
+      @endforelse
+    </tbody>
+  </table>
 
-{{ $movimientos->links() }}
-</div>
+  <div class="mt-3">
+    {{ $movimientos->links() }}
+  </div>
 @endsection

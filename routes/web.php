@@ -7,17 +7,14 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\MovimientoController;
 
-
 /*
 |--------------------------------------------------------------------------
 | RUTAS DE AUTENTICACIÓN
 |--------------------------------------------------------------------------
 */
-
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -26,15 +23,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware('auth')->group(function () {
 
-   Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
-    ->middleware('role:admin')
-    ->name('dashboard.admin');
+    // Dashboards
+    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
+        ->middleware('role:admin')
+        ->name('dashboard.admin');
 
-Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
-    ->middleware('role:empleado')
-    ->name('dashboard.empleado');
-
-
+    Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
+        ->middleware('role:empleado')
+        ->name('dashboard.empleado');
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +46,6 @@ Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
         Route::delete('/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
     });
 
-
     /*
     |--------------------------------------------------------------------------
     | EMPLEADOS (solo admin)
@@ -65,27 +60,26 @@ Route::get('/dashboard/empleado', [DashboardController::class, 'empleado'])
         Route::delete('/{id}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
     });
 
-
     /*
     |--------------------------------------------------------------------------
     | MOVIMIENTOS (admin y empleado)
     |--------------------------------------------------------------------------
     */
-    Route::prefix('movimientos')->middleware('role:admin,empleado')->group(function () {
+    Route::prefix('movimientos')->group(function () {
 
-        Route::get('/deposito', [MovimientoController::class, 'deposito'])->name('movimientos.deposito');
+        Route::get('/', [MovimientoController::class, 'index'])->name('movimientos.index');
+
+        Route::get('/deposito', [MovimientoController::class, 'createDeposito'])->name('movimientos.deposito');
         Route::post('/deposito', [MovimientoController::class, 'storeDeposito'])->name('movimientos.deposito.store');
 
-        Route::get('/retiro', [MovimientoController::class, 'retiro'])->name('movimientos.retiro');
+        Route::get('/retiro', [MovimientoController::class, 'createRetiro'])->name('movimientos.retiro');
         Route::post('/retiro', [MovimientoController::class, 'storeRetiro'])->name('movimientos.retiro.store');
-
-        Route::get('/tramites', [MovimientoController::class, 'tramites'])->name('movimientos.tramites');
-        Route::post('/tramites', [MovimientoController::class, 'storeTramites'])->name('movimientos.tramites.store');
 
         Route::get('/pago-servicio', [MovimientoController::class, 'pagoServicio'])->name('movimientos.pago_servicio');
         Route::post('/pago-servicio', [MovimientoController::class, 'storePagoServicio'])->name('movimientos.pago_servicio.store');
 
-        Route::delete('/eliminar-todo', [MovimientoController::class, 'deleteAll'])->name('movimientos.deleteAll');
+        Route::get('/tramites', [MovimientoController::class, 'tramites'])->name('movimientos.tramites');
+        Route::post('/tramites', [MovimientoController::class, 'storeTramites'])->name('movimientos.tramites.store');
     });
-
 });
+

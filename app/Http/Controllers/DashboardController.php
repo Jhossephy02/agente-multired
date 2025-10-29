@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\MovimientoController;
 
 class DashboardController extends Controller
 {
     public function admin()
     {
-        return view('dashboards.admin');
+        $saldo = MovimientoController::obtenerSaldoActual();
+        return view('dashboards.admin', compact('saldo'));
     }
 
     public function empleado()
     {
-        return view('dashboards.empleado');
+        $saldo = MovimientoController::obtenerSaldoActual();
+        return view('dashboards.empleado', compact('saldo'));
     }
 }
