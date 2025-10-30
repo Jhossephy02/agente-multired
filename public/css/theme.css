@@ -1,0 +1,82 @@
+
+:root {
+  --bg: #0b0e14;
+  --card: #10141c;
+  --text: #e9f1ff;
+  --muted: #9fb0c6;
+  --accent: #27c3ff; /* AstroPay-ish celeste */
+  --accent-2: #007bff;
+  --glass: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.14);
+}
+[data-theme="light"] {
+  --bg: #f6f8fc;
+  --card: #ffffff;
+  --text: #0a1220;
+  --muted: #5c6f85;
+  --accent: #007bff;
+  --accent-2: #27c3ff;
+  --glass: rgba(0,0,0,0.04);
+  --border: rgba(0,0,0,0.12);
+}
+
+body.app-body{ background:var(--bg); color:var(--text); min-height:100vh; }
+a{ color:var(--accent); text-decoration:none; }
+a:hover{ opacity:.9; }
+.glass{ background:var(--glass); backdrop-filter: blur(12px); border:1px solid var(--border); }
+
+.app-header{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.6rem 1rem;
+}
+.brand{ position:relative; display:flex; align-items:center; gap:.6rem; }
+.brand .orbita{
+  width:14px; height:14px; border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 18px var(--accent);
+  display:inline-block;
+  animation: pulse 2.2s infinite ease-in-out;
+}
+@keyframes pulse{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.18); }
+}
+.brand-text{ letter-spacing:.6px; }
+
+.sidebar{
+  width:240px; position:fixed; top:56px; bottom:0; left:0; padding:14px;
+  transition: width .25s ease, transform .25s ease;
+  overflow:auto; border-right:1px solid var(--border);
+}
+.sidebar.collapsed{ width:76px; }
+.menu{ display:grid; gap:6px; }
+.menu-section{ margin:8px 10px 4px; }
+.menu-link{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  color:var(--text); border-radius:10px;
+  transition: transform .15s ease, background .2s ease;
+  white-space:nowrap;
+}
+.menu-link:hover{
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  transform: translateX(2px);
+}
+.sidebar.collapsed .menu-link span{ display:none; }
+
+.app-main{ margin-left:256px; transition: margin-left .25s ease; }
+.sidebar.collapsed ~ .app-main{ margin-left:92px; }
+
+.card-app{ background:var(--card); border:1px solid var(--border); border-radius:16px; }
+.kpi .value{ font-weight:700; font-size:1.35rem; }
+.badge-type{ border-radius:999px; padding:.25rem .6rem; font-size:.75rem; }
+.bg-type-deposito{ background:rgba(16,185,129,.2); color:#0f6b4c; }
+.bg-type-retiro{ background:rgba(239,68,68,.2); color:#8f1e1e; }
+.bg-type-pago_servicio{ background:rgba(59,130,246,.2); color:#164781; }
+.bg-type-tramite{ background:rgba(245,158,11,.2); color:#7a4f08; }
+
+.btn-theme{ background:var(--accent); border:none; color:white; }
+.btn-theme:hover{ filter:brightness(1.1); }
+
+.table-app{ color:var(--text); }
+.table-app tr:hover td{ background: color-mix(in oklab, var(--accent) 9%, transparent); }
