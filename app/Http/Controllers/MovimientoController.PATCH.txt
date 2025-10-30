@@ -1,0 +1,29 @@
+// Agrega al inicio:
+use App\Models\Empresa;
+
+// Reemplaza estos métodos:
+
+public function pagoServicio()
+{
+    $empresas = Empresa::all();
+    return view('movimientos.pago_servicio', compact('empresas'));
+}
+
+public function storePagoServicio(\Illuminate\Http\Request $request)
+{
+    $data = $request->validate([
+        'empresa_id' => 'required|exists:empresas,id',
+        'monto'      => 'required|numeric|min:0.10',
+        'codigo'     => 'required|string|max:100',
+    ]);
+
+    \App\Models\Movimiento::create([
+        'tipo'       => 'pago_servicio',
+        'empresa_id' => $data['empresa_id'],
+        'monto'      => $data['monto'],
+        'referencia' => $data['codigo'],
+        'estado'     => 'aprobado',
+    ]);
+
+    return redirect()->route('movimientos.index')->with('success','Pago de servicio registrado.');
+}

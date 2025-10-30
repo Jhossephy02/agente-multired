@@ -10,10 +10,10 @@ class EmpleadoController extends Controller
 {
     // LISTA
     public function index()
-    {
-        $empleados = User::where('role', 'empleado')->get();
-        return view('empleados.index', compact('empleados'));
-    }
+{
+    $empleados = User::where('role','empleado')->paginate(10);
+    return view('empleados.index', compact('empleados'));
+}
 
     // FORMULARIO CREAR
     public function create()

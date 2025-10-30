@@ -1,0 +1,20 @@
+Asegúrate que tu app/Models/Movimiento.php tenga fillable:
+protected $fillable = [
+    'tipo',
+    'cliente_id',
+    'empresa_id',
+    'monto',
+    'referencia',
+    'cci',
+    'dni',
+    'telefono',
+    'correo',
+    'detalle',
+    'estado',
+];
+
+Y agregue relaciones:
+public function empresa(){ return $this->belongsTo(\App\Models\Empresa::class); }
+public function cliente(){ return $this->belongsTo(\App\Models\Cliente::class); }
+
+Y el método saldoActual() como ya lo vienes usando.

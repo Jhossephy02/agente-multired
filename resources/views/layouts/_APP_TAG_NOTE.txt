@@ -1,0 +1,5 @@
+En tu resources/views/layouts/app.blade.php asegúrate que el <html> tenga:
+<html lang="es" class="dark" data-palette="banco">
+
+Si quieres claro por defecto, quita "dark":
+<html lang="es" data-palette="banco">

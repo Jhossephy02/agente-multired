@@ -1,0 +1,13 @@
+En tu tabla de movimientos (resources/views/movimientos/index.blade.php),
+cuando imprimes la columna "Cliente/Empresa", usa:
+
+<td>
+  @if($m->tipo === 'pago_servicio')
+    {{ $m->empresa->nombre ?? '-' }}
+  @else
+    {{ $m->cliente->nombre ?? '-' }}
+  @endif
+</td>
+
+Y para mostrar la referencia (código), si corresponde:
+<td>{{ $m->referencia ?? '-' }}</td>
